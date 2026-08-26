@@ -5,6 +5,8 @@ import { useQueryClient, QueryKey } from '@tanstack/react-query';
 export function useRefreshOnFocus(queryKey?: QueryKey) {
   const queryClient = useQueryClient();
   const firstTimeRef = React.useRef(true);
+  const queryKeyRef = React.useRef(queryKey);
+  queryKeyRef.current = queryKey;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -14,10 +16,10 @@ export function useRefreshOnFocus(queryKey?: QueryKey) {
       }
 
       queryClient.refetchQueries({
-        queryKey,
+        queryKey: queryKeyRef.current,
         stale: true,
         type: 'active',
       });
-    }, [queryClient, queryKey]),
+    }, [queryClient]),
   );
 }

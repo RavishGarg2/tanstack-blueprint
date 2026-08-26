@@ -19,7 +19,7 @@ import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationContainer';
 import { HugeiconsIcon } from '@hugeicons/react-native';
-import { ArrowUp01Icon, Search01Icon } from '@hugeicons/core-free-icons';
+import { ArrowUp01Icon, Search01Icon, UserAdd01Icon } from '@hugeicons/core-free-icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -39,12 +39,9 @@ export default function HomeScreen({ navigation }: Props) {
   }, [showScrollToTop, fadeAnim]);
 
   const handleScroll = (event: any) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY > 500) {
-      setShowScrollToTop(true);
-    } else {
-      setShowScrollToTop(false);
-    }
+    const offsetY = event?.nativeEvent?.contentOffset?.y ?? 0;
+    const shouldShow = offsetY > 500;
+    setShowScrollToTop(prev => (prev !== shouldShow ? shouldShow : prev));
   };
 
   const scrollToTop = () => {
@@ -142,17 +139,30 @@ export default function HomeScreen({ navigation }: Props) {
             Discover and connect with people
           </Text>
         </View>
-        <TouchableOpacity
-          style={styles.searchIconButton}
-          onPress={() => navigation.navigate('ProductSearch')}
-          activeOpacity={0.7}
-        >
-          <HugeiconsIcon
-            icon={Search01Icon}
-            size={moderateScale(20)}
-            color={colors.snapchatYellow}
-          />
-        </TouchableOpacity>
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={styles.headerIconButton}
+            onPress={() => navigation.navigate('CreateUser')}
+            activeOpacity={0.7}
+          >
+            <HugeiconsIcon
+              icon={UserAdd01Icon}
+              size={moderateScale(20)}
+              color={colors.snapchatYellow}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.headerIconButton}
+            onPress={() => navigation.navigate('ProductSearch')}
+            activeOpacity={0.7}
+          >
+            <HugeiconsIcon
+              icon={Search01Icon}
+              size={moderateScale(20)}
+              color={colors.snapchatYellow}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <LegendList
@@ -244,7 +254,13 @@ const styles = StyleSheet.create({
   headerTextContainer: {
     flex: 1,
   },
-  searchIconButton: {
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: horizontalScale(10),
+    marginLeft: horizontalScale(12),
+  },
+  headerIconButton: {
     width: moderateScale(42),
     height: moderateScale(42),
     borderRadius: moderateScale(21),
@@ -253,7 +269,6 @@ const styles = StyleSheet.create({
     borderColor: colors.yellowTransparent40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: horizontalScale(12),
   },
   headerTitle: {
     color: colors.white,

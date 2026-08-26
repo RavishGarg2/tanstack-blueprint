@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { FetchPhotosResponse, SearchProductsResponse, User, Product } from './types';
+import {
+  FetchPhotosResponse,
+  SearchProductsResponse,
+  User,
+  Product,
+  CreateUserInput,
+} from './types';
 
 const apiClient = axios.create({
   baseURL: 'https://dummyjson.com',
@@ -13,6 +19,11 @@ const fetchPhotos = async (
   const response = await apiClient.get<FetchPhotosResponse>(
     `/users?limit=${limit}&skip=${skip}`,
   );
+  return response.data;
+};
+
+const createUser = async (userData: CreateUserInput): Promise<User> => {
+  const response = await apiClient.post<User>('/users/add', userData);
   return response.data;
 };
 
@@ -50,6 +61,7 @@ const searchProducts = async (
 export {
   apiClient,
   fetchPhotos,
+  createUser,
   updateUserGender,
   fetchUserById,
   fetchProductById,

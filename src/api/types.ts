@@ -18,6 +18,19 @@ export interface User {
   };
 }
 
+export interface CreateUserInput {
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: 'male' | 'female';
+  role?: string;
+  image?: string;
+  company?: {
+    title?: string;
+    name?: string;
+  };
+}
+
 export interface FetchPhotosResponse {
   users: User[];
   total: number;
