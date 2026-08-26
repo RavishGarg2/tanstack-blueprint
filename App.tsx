@@ -4,11 +4,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, onlineManager, focusManager } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { createMMKV } from 'react-native-mmkv';
+import { storage } from './src/utils/storage';
 import NetInfo from '@react-native-community/netinfo';
 import RootNavigation from './src/navigation/NavigationContainer';
-
-const storage = createMMKV();
 
 const clientPersister = createAsyncStoragePersister({
   storage: {

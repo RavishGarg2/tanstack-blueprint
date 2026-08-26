@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Animated, TouchableOpacity, Alert } from 'react-native';
 import { LegendList } from '@legendapp/list/react-native';
 import {
   useInfiniteQuery,
@@ -20,7 +20,8 @@ import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationContainer';
 import { HugeiconsIcon } from '@hugeicons/react-native';
-import { ArrowUp01Icon, Search01Icon, UserAdd01Icon } from '@hugeicons/core-free-icons';
+import { ArrowUp01Icon, Search01Icon, UserAdd01Icon, RefreshIcon } from '@hugeicons/core-free-icons';
+import { resetAppStorage } from '../utils/storage';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -117,6 +118,21 @@ export default function HomeScreen({ navigation }: Props) {
 
   useRefreshOnFocus(queryKeys.photos(limit));
 
+  const handleResetStorage = () => {
+    Alert.alert(
+      'Reset All Storage?',
+      'This will wipe all MMKV persistent storage and TanStack query cache so you can test the app from a clean slate.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Reset All',
+          style: 'destructive',
+          onPress: () => resetAppStorage(queryClient),
+        },
+      ],
+    );
+  };
+
   if (isLoading) {
     return <SkeletonLoader />;
   }
@@ -138,6 +154,11 @@ export default function HomeScreen({ navigation }: Props) {
         subtitle="Discover and connect with people"
         rightActions={
           <>
+            <HeaderIconButton
+              icon={RefreshIcon}
+              color={colors.snapchatYellow}
+              onPress={handleResetStorage}
+            />
             <HeaderIconButton
               icon={UserAdd01Icon}
               onPress={() => navigation.navigate('CreateUser')}
