@@ -12,6 +12,7 @@ import {
   NativeScrollEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationContainer';
 import { HugeiconsIcon } from '@hugeicons/react-native';
@@ -119,23 +120,11 @@ export default function ProductDetailScreen({ route, navigation }: Props) {
 
       <SafeAreaView style={styles.safeArea}>
         {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-            activeOpacity={0.8}
-          >
-            <HugeiconsIcon
-              icon={ArrowLeft01Icon}
-              size={moderateScale(22)}
-              color={colors.white}
-            />
-          </TouchableOpacity>
-          <Text numberOfLines={1} style={styles.headerTitle}>
-            Product Details
-          </Text>
-          <View style={styles.headerPlaceholder} />
-        </View>
+        <Header
+          title="Product Details"
+          showBackButton={true}
+          onBack={() => navigation.goBack()}
+        />
 
         <ScrollView
           contentContainerStyle={styles.scrollContent}
@@ -408,32 +397,6 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     zIndex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: horizontalScale(20),
-    paddingVertical: verticalScale(12),
-  },
-  backButton: {
-    width: moderateScale(40),
-    height: moderateScale(40),
-    borderRadius: moderateScale(20),
-    backgroundColor: colors.whiteTransparent8,
-    borderWidth: 1,
-    borderColor: colors.whiteTransparent10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    color: colors.white,
-    fontSize: moderateScale(18),
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
-  },
-  headerPlaceholder: {
-    width: moderateScale(40),
   },
   scrollContent: {
     paddingHorizontal: horizontalScale(20),

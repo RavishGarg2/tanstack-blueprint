@@ -3,18 +3,15 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationContainer';
 import { HugeiconsIcon } from '@hugeicons/react-native';
 import {
-  ArrowLeft01Icon,
-  Search01Icon,
-  Cancel01Icon,
   PackageSearch01Icon,
 } from '@hugeicons/core-free-icons';
 import { LegendList } from '@legendapp/list/react-native';
@@ -73,50 +70,16 @@ export default function ProductSearchScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header Bar */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-          activeOpacity={0.8}
-        >
-          <HugeiconsIcon
-            icon={ArrowLeft01Icon}
-            size={moderateScale(22)}
-            color={colors.white}
-          />
-        </TouchableOpacity>
-
-        <View style={styles.searchBarContainer}>
-          <HugeiconsIcon
-            icon={Search01Icon}
-            size={moderateScale(18)}
-            color={colors.snapchatYellow}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Search products (e.g. phone, shoes)..."
-            placeholderTextColor={colors.textLabel}
-            value={searchTerm}
-            onChangeText={setSearchTerm}
-            autoFocus={true}
-            returnKeyType="search"
-            clearButtonMode="never"
-          />
-          {searchTerm.length > 0 && (
-            <TouchableOpacity
-              onPress={() => setSearchTerm('')}
-              style={styles.clearButton}
-              activeOpacity={0.7}
-            >
-              <HugeiconsIcon
-                icon={Cancel01Icon}
-                size={moderateScale(16)}
-                color={colors.textMuted}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
+      <Header
+        showBackButton={true}
+        onBack={() => navigation.goBack()}
+        searchProps={{
+          placeholder: 'Search products (e.g. phone, shoes)...',
+          value: searchTerm,
+          onChangeText: setSearchTerm,
+          autoFocus: true,
+        }}
+      />
 
       {/* Query Status Bar */}
       {debouncedSearch.length > 0 && (
@@ -210,46 +173,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bgPrimary,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: horizontalScale(16),
-    paddingVertical: verticalScale(10),
-    gap: horizontalScale(12),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderLight,
-  },
-  backButton: {
-    width: moderateScale(40),
-    height: moderateScale(40),
-    borderRadius: moderateScale(20),
-    backgroundColor: colors.whiteTransparent8,
-    borderWidth: 1,
-    borderColor: colors.whiteTransparent10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  searchBarContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.bgCard,
-    borderRadius: moderateScale(22),
-    paddingHorizontal: horizontalScale(14),
-    height: verticalScale(44),
-    borderWidth: 1,
-    borderColor: colors.whiteTransparent10,
-  },
-  input: {
-    flex: 1,
-    color: colors.white,
-    marginLeft: horizontalScale(8),
-    fontSize: moderateScale(14),
-    paddingVertical: 0,
-  },
-  clearButton: {
-    padding: moderateScale(4),
   },
   statusBar: {
     flexDirection: 'row',

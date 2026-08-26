@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
   ScrollView,
   Image,
@@ -12,6 +11,8 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import CustomTextInput from '../components/CustomTextInput';
+import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationContainer';
@@ -167,21 +168,11 @@ export default function CreateUserScreen({ navigation }: Props) {
 
       <SafeAreaView style={styles.safeArea}>
         {/* Top Header */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-            activeOpacity={0.8}
-          >
-            <HugeiconsIcon
-              icon={ArrowLeft01Icon}
-              size={moderateScale(22)}
-              color={colors.white}
-            />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>New Member</Text>
-          <View style={styles.headerPlaceholder} />
-        </View>
+        <Header
+          title="New Member"
+          showBackButton={true}
+          onBack={() => navigation.goBack()}
+        />
 
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -247,28 +238,19 @@ export default function CreateUserScreen({ navigation }: Props) {
                   }}
                 >
                   {field => (
-                    <View style={[styles.inputGroup, styles.halfWidth]}>
-                      <Text style={styles.label}>First Name *</Text>
-                      <TextInput
-                        style={[
-                          styles.input,
-                          field.state.meta.errors.length > 0 && styles.inputError,
-                        ]}
-                        placeholder="Jane"
-                        placeholderTextColor={colors.textLabel}
-                        value={field.state.value}
-                        onChangeText={text =>
-                          field.handleChange(sanitizeAlphabetic(text))
-                        }
-                        onBlur={field.handleBlur}
-                        autoCapitalize="words"
-                      />
-                      {field.state.meta.errors.length > 0 && (
-                        <Text style={styles.errorText}>
-                          {field.state.meta.errors.join(', ')}
-                        </Text>
-                      )}
-                    </View>
+                    <CustomTextInput
+                      containerStyle={styles.halfWidth}
+                      label="First Name"
+                      isRequired
+                      placeholder="Jane"
+                      value={field.state.value}
+                      onChangeText={text =>
+                        field.handleChange(sanitizeAlphabetic(text))
+                      }
+                      onBlur={field.handleBlur}
+                      autoCapitalize="words"
+                      error={field.state.meta.errors}
+                    />
                   )}
                 </form.Field>
 
@@ -281,28 +263,19 @@ export default function CreateUserScreen({ navigation }: Props) {
                   }}
                 >
                   {field => (
-                    <View style={[styles.inputGroup, styles.halfWidth]}>
-                      <Text style={styles.label}>Last Name *</Text>
-                      <TextInput
-                        style={[
-                          styles.input,
-                          field.state.meta.errors.length > 0 && styles.inputError,
-                        ]}
-                        placeholder="Doe"
-                        placeholderTextColor={colors.textLabel}
-                        value={field.state.value}
-                        onChangeText={text =>
-                          field.handleChange(sanitizeAlphabetic(text))
-                        }
-                        onBlur={field.handleBlur}
-                        autoCapitalize="words"
-                      />
-                      {field.state.meta.errors.length > 0 && (
-                        <Text style={styles.errorText}>
-                          {field.state.meta.errors.join(', ')}
-                        </Text>
-                      )}
-                    </View>
+                    <CustomTextInput
+                      containerStyle={styles.halfWidth}
+                      label="Last Name"
+                      isRequired
+                      placeholder="Doe"
+                      value={field.state.value}
+                      onChangeText={text =>
+                        field.handleChange(sanitizeAlphabetic(text))
+                      }
+                      onBlur={field.handleBlur}
+                      autoCapitalize="words"
+                      error={field.state.meta.errors}
+                    />
                   )}
                 </form.Field>
               </View>
@@ -319,38 +292,19 @@ export default function CreateUserScreen({ navigation }: Props) {
                 }}
               >
                 {field => (
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Email Address *</Text>
-                    <View
-                      style={[
-                        styles.iconInputWrapper,
-                        field.state.meta.errors.length > 0 && styles.inputError,
-                      ]}
-                    >
-                      <HugeiconsIcon
-                        icon={Mail01Icon}
-                        size={moderateScale(18)}
-                        color={colors.textMuted}
-                        style={styles.fieldIcon}
-                      />
-                      <TextInput
-                        style={styles.iconInput}
-                        placeholder="jane.doe@example.com"
-                        placeholderTextColor={colors.textLabel}
-                        value={field.state.value}
-                        onChangeText={field.handleChange}
-                        onBlur={field.handleBlur}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                      />
-                    </View>
-                    {field.state.meta.errors.length > 0 && (
-                      <Text style={styles.errorText}>
-                        {field.state.meta.errors.join(', ')}
-                      </Text>
-                    )}
-                  </View>
+                  <CustomTextInput
+                    label="Email Address"
+                    isRequired
+                    leftIcon={Mail01Icon}
+                    placeholder="jane.doe@example.com"
+                    value={field.state.value}
+                    onChangeText={field.handleChange}
+                    onBlur={field.handleBlur}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    error={field.state.meta.errors}
+                  />
                 )}
               </form.Field>
 
@@ -426,52 +380,32 @@ export default function CreateUserScreen({ navigation }: Props) {
               {/* Role / Job Title Field */}
               <form.Field name="role">
                 {field => (
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Job Title / Role</Text>
-                    <View style={styles.iconInputWrapper}>
-                      <HugeiconsIcon
-                        icon={Briefcase01Icon}
-                        size={moderateScale(18)}
-                        color={colors.textMuted}
-                        style={styles.fieldIcon}
-                      />
-                      <TextInput
-                        style={styles.iconInput}
-                        placeholder="e.g. Senior Developer"
-                        placeholderTextColor={colors.textLabel}
-                        value={field.state.value}
-                        onChangeText={text =>
-                          field.handleChange(sanitizeAlphabetic(text))
-                        }
-                      />
-                    </View>
-                  </View>
+                  <CustomTextInput
+                    label="Job Title / Role"
+                    leftIcon={Briefcase01Icon}
+                    placeholder="e.g. Senior Developer"
+                    value={field.state.value}
+                    onChangeText={text =>
+                      field.handleChange(sanitizeAlphabetic(text))
+                    }
+                    error={field.state.meta.errors}
+                  />
                 )}
               </form.Field>
 
               {/* Company Name Field */}
               <form.Field name="companyName">
                 {field => (
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Company / Organization</Text>
-                    <View style={styles.iconInputWrapper}>
-                      <HugeiconsIcon
-                        icon={Building01Icon}
-                        size={moderateScale(18)}
-                        color={colors.textMuted}
-                        style={styles.fieldIcon}
-                      />
-                      <TextInput
-                        style={styles.iconInput}
-                        placeholder="e.g. Acme Tech"
-                        placeholderTextColor={colors.textLabel}
-                        value={field.state.value}
-                        onChangeText={text =>
-                          field.handleChange(text.replace(/\s+/g, ' '))
-                        }
-                      />
-                    </View>
-                  </View>
+                  <CustomTextInput
+                    label="Company / Organization"
+                    leftIcon={Building01Icon}
+                    placeholder="e.g. Acme Tech"
+                    value={field.state.value}
+                    onChangeText={text =>
+                      field.handleChange(text.replace(/\s+/g, ' '))
+                    }
+                    error={field.state.meta.errors}
+                  />
                 )}
               </form.Field>
             </View>
@@ -538,32 +472,6 @@ const styles = StyleSheet.create({
   },
   keyboardView: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: horizontalScale(20),
-    paddingVertical: verticalScale(12),
-  },
-  backButton: {
-    width: moderateScale(40),
-    height: moderateScale(40),
-    borderRadius: moderateScale(20),
-    backgroundColor: colors.whiteTransparent8,
-    borderWidth: 1,
-    borderColor: colors.whiteTransparent10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    color: colors.white,
-    fontSize: moderateScale(18),
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
-  },
-  headerPlaceholder: {
-    width: moderateScale(40),
   },
   scrollContent: {
     paddingHorizontal: horizontalScale(20),
@@ -642,44 +550,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: verticalScale(6),
     letterSpacing: 0.2,
-  },
-  input: {
-    backgroundColor: colors.whiteTransparent5,
-    borderRadius: moderateScale(14),
-    borderWidth: 1,
-    borderColor: colors.whiteTransparent10,
-    paddingHorizontal: horizontalScale(14),
-    paddingVertical: verticalScale(12),
-    color: colors.white,
-    fontSize: moderateScale(14),
-  },
-  iconInputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.whiteTransparent5,
-    borderRadius: moderateScale(14),
-    borderWidth: 1,
-    borderColor: colors.whiteTransparent10,
-    paddingHorizontal: horizontalScale(14),
-    gap: 10
-  },
-  fieldIcon: {
-    marginRight: horizontalScale(10),
-  },
-  iconInput: {
-    flex: 1,
-    paddingVertical: verticalScale(12),
-    color: colors.white,
-    fontSize: moderateScale(14),
-  },
-  inputError: {
-    borderColor: colors.errorRed,
-  },
-  errorText: {
-    color: colors.errorRed,
-    fontSize: moderateScale(11),
-    marginTop: verticalScale(4),
-    marginLeft: horizontalScale(4),
   },
   genderRow: {
     flexDirection: 'row',

@@ -15,6 +15,7 @@ import FooterLoader from '../components/FooterLoader';
 import UserCard from '../components/UserCard';
 import { User } from '../api/types';
 import SkeletonLoader from '../components/SkeletonLoader';
+import Header, { HeaderIconButton } from '../components/Header';
 import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationContainer';
@@ -132,38 +133,22 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerTextContainer}>
-          <Text style={styles.headerTitle}>User Directory</Text>
-          <Text style={styles.headerSubtitle}>
-            Discover and connect with people
-          </Text>
-        </View>
-        <View style={styles.headerActions}>
-          <TouchableOpacity
-            style={styles.headerIconButton}
-            onPress={() => navigation.navigate('CreateUser')}
-            activeOpacity={0.7}
-          >
-            <HugeiconsIcon
+      <Header
+        title="User Directory"
+        subtitle="Discover and connect with people"
+        rightActions={
+          <>
+            <HeaderIconButton
               icon={UserAdd01Icon}
-              size={moderateScale(20)}
-              color={colors.snapchatYellow}
+              onPress={() => navigation.navigate('CreateUser')}
             />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.headerIconButton}
-            onPress={() => navigation.navigate('ProductSearch')}
-            activeOpacity={0.7}
-          >
-            <HugeiconsIcon
+            <HeaderIconButton
               icon={Search01Icon}
-              size={moderateScale(20)}
-              color={colors.snapchatYellow}
+              onPress={() => navigation.navigate('ProductSearch')}
             />
-          </TouchableOpacity>
-        </View>
-      </View>
+          </>
+        }
+      />
 
       <LegendList
         ref={listRef}
@@ -241,45 +226,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     paddingHorizontal: horizontalScale(20),
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: horizontalScale(20),
-    paddingVertical: verticalScale(16),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderLight,
-  },
-  headerTextContainer: {
-    flex: 1,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: horizontalScale(10),
-    marginLeft: horizontalScale(12),
-  },
-  headerIconButton: {
-    width: moderateScale(42),
-    height: moderateScale(42),
-    borderRadius: moderateScale(21),
-    backgroundColor: colors.yellowTransparent12,
-    borderWidth: 1,
-    borderColor: colors.yellowTransparent40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    color: colors.white,
-    fontSize: moderateScale(26),
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
-  },
-  headerSubtitle: {
-    color: colors.textMuted,
-    fontSize: moderateScale(13),
-    marginTop: verticalScale(4),
   },
   listContent: {
     paddingHorizontal: horizontalScale(16),
