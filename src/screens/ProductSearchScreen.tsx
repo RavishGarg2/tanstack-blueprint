@@ -77,7 +77,6 @@ export default function ProductSearchScreen({ navigation }: Props) {
           placeholder: 'Search products (e.g. phone, shoes)...',
           value: searchTerm,
           onChangeText: setSearchTerm,
-          autoFocus: true,
         }}
       />
 
@@ -126,7 +125,7 @@ export default function ProductSearchScreen({ navigation }: Props) {
             ))}
           </View>
         </View>
-      ) : isLoading ? (
+      ) : isLoading || (searchTerm.trim() !== debouncedSearch && products.length === 0) ? (
         <View style={styles.centerContainer}>
           <ActivityIndicator size="large" color={colors.snapchatYellow} />
           <Text style={styles.loadingText}>Fetching products...</Text>
